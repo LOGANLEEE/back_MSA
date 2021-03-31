@@ -9,10 +9,14 @@ import session from 'express-session';
 import errorhandler from 'errorhandler';
 import { api_router } from '@router/api';
 import { auth_router } from '@router/auth';
+import cors from 'cors';
+import fs from 'fs';
+import https from 'https';
 
 const app: express.Application = express();
 const port: number = parseInt((process.env.PORT || 4000) as string, 10);
 
+app.use(cors());
 app.use(cookie_parser());
 app.use(body_parser.json());
 app.use(body_parser.urlencoded({ extended: false }));
@@ -24,6 +28,18 @@ app.use(passport.session());
 app.use('/api', api_router);
 app.use('/auth', auth_router);
 
-app.listen(port, () => {
-	console.log(`Example app listening at http://localhost:${port}`);
-});
+https
+	.createServer(
+		{
+			key: fs.readFileSync('./ssl/localhost.key'),
+			cert: fs.readFileSync('./ssl/localhost.crt'),
+		},
+		app,
+	)
+	.listen(port, () => {
+		console.log(`Example app listening at https://localhost:${port}`);
+	});
+
+// app.listen(port, () => {
+// 	console.log(`Example app listening at https://localhost:${port}`);
+// });
