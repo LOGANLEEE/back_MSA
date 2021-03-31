@@ -1,10 +1,28 @@
-import express from 'express';
-const app = express();
-const port = 4000;
+import 'module-alias/register';
 
-app.get('/', (req, res) => {
-	res.send('Hello World!');
-});
+import express from 'express';
+import oauth2orize from 'oauth2orize';
+import cookie_parser from 'cookie-parser';
+import body_parser from 'body-parser';
+import passport from 'passport';
+import session from 'express-session';
+import errorhandler from 'errorhandler';
+import { api_router } from '@router/api';
+import { auth_router } from '@router/auth';
+
+const app: express.Application = express();
+const port: number = parseInt((process.env.PORT || 4000) as string, 10);
+
+app.use(cookie_parser());
+app.use(body_parser.json());
+app.use(body_parser.urlencoded({ extended: false }));
+app.use(errorhandler());
+app.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use('/api', api_router);
+app.use('/auth', auth_router);
 
 app.listen(port, () => {
 	console.log(`Example app listening at http://localhost:${port}`);
