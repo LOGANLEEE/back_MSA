@@ -3,17 +3,41 @@
 	"version": "0.0.0",
 	"private": true,
 	"scripts": {
-		"s": "nodemon src/server.ts",
+		"pm2_s": "pm2 start src/server.ts --watch",
+		"s": "nodemon",
 		"build": "tsc -p ./"
 	},
-	"dependencies": {
-		"express": "~4.16.1"
+	"_moduleAliases": {
+		"@router": "./src/router"
 	},
-	"devDependencies": {
-		"@types/express": "^4.17.11",
-		"@types/node": "^14.14.37",
+	"dependencies": {
+		"body-parser": "^1.19.0",
+		"connect-ensure-login": "^0.1.1",
+		"cookie-parser": "^1.4.5",
+		"cors": "^2.8.5",
+		"errorhandler": "^1.5.1",
+		"express": "^4.17.1",
+		"express-session": "^1.17.1",
+		"module-alias": "^2.2.2",
 		"nodemon": "^2.0.7",
+		"oauth2orize": "^1.11.0",
+		"passport": "^0.4.1",
+		"passport-http": "^0.3.0",
+		"passport-http-bearer": "^1.0.1",
+		"passport-local": "^1.0.0",
+		"passport-oauth2-client-password": "^0.1.2",
 		"ts-node": "^9.1.1",
 		"typescript": "^4.2.3"
+	},
+	"devDependencies": {
+		"@types/body-parser": "^1.19.0",
+		"@types/cookie-parser": "^1.4.2",
+		"@types/cors": "^2.8.10",
+		"@types/errorhandler": "^1.5.0",
+		"@types/express": "^4.17.11",
+		"@types/express-session": "^1.17.3",
+		"@types/node": "^14.14.37",
+		"@types/oauth2orize": "^1.8.8",
+		"@types/passport": "^1.0.6"
 	}
 }
