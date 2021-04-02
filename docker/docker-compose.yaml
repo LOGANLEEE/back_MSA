@@ -13,7 +13,7 @@ services:
         ports:
             - 5432:5432
         volumes:
-            - /Users/loganlee/project/like_to_be_teacher/server/auth_like_to_be_teacher/docker/pg_data:/var/lib/postgresql/data
+            - /Users/loganlee/project/like_to_be_teacher/server/pg_data:/var/lib/postgresql/data
         environment:
             - POSTGRES_USER=admin
             - POSTGRES_PASSWORD=dkffkel
