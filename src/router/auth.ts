@@ -2,14 +2,14 @@ import express from 'express';
 
 import { prisma, hashPassword, validatePassword } from '@util/globalFunc';
 import { user } from '.prisma/client';
+import { PrismaClientValidationError } from '@prisma/client/runtime';
 
 export const auth_router = express.Router({ caseSensitive: false });
 
-// auth_router.use(function (req, res, next) {
-// console.log('Time:', Date.now());
-// console.log(req.body);
-// next();
-// });
+auth_router.use(function (req, res, next) {
+	console.log(req.body);
+	next();
+});
 
 auth_router.post('/login', async (req: express.Request, res: express.Response) => {
 	const { id, password }: Login = req.body;
@@ -27,14 +27,14 @@ auth_router.post('/login', async (req: express.Request, res: express.Response) =
 						...e,
 					});
 				} else {
-					res.send({ reason: 'incorrect password' });
+					res.send({ message: 'password' });
 				}
 			} else {
-				res.send({ reason: 'no matched id' });
+				res.send({ message: 'id' });
 			}
 		})
 		.catch((e) => {
-			res.send({ reason: 'db problem' });
+			res.send({ message: 'db problem' });
 		});
 });
 
@@ -48,8 +48,13 @@ auth_router.post('/signup', async (req: express.Request, res: express.Response) 
 		.create({
 			data: { country, email, first_name, id, last_name, password: hash, salt, mobile },
 		})
-		.then(() => {
-			res.send({ isSuccess: true });
+		.then((e) => {
+			if (e !== null) {
+				res.send({ is_success: true });
+			}
+		})
+		.catch((e) => {
+			res.send({ message: e?.meta?.target });
 		});
 });
 
